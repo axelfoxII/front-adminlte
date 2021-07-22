@@ -29,6 +29,10 @@ export class UsuarioService {
   
   }
 
+  get token():string{
+    return localStorage.getItem('token');
+  }
+
   obtenerUsuarios(){
     
     let headers = new HttpHeaders({
@@ -36,6 +40,16 @@ export class UsuarioService {
     });
 
   return this.http.get(`${URL}/usuarios`,{headers}); 
+
+  }
+
+  deleteUsuario(id:string){
+    
+    let headers = new HttpHeaders({
+      'token': this.token
+    });
+
+    return this.http.delete(`${URL}/usuarios/${id}`, {headers}); 
 
   }
 

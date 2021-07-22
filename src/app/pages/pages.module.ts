@@ -8,6 +8,7 @@ import { SharedModule } from '../shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { StockComponent } from './stock/stock.component';
 import { DataTablesModule } from 'angular-datatables';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -31,7 +32,9 @@ import { DataTablesModule } from 'angular-datatables';
     CommonModule,
     SharedModule,
     RouterModule,
-    DataTablesModule
+    DataTablesModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class PagesModule { }
