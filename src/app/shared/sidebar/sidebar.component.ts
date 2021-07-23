@@ -13,6 +13,8 @@ declare var $:any;
 })
 export class SidebarComponent implements OnInit {
 
+  perfil = localStorage.getItem('nombre');
+
   menuItems: any[];
   constructor(private sidebarService: SidebarService, private router:Router) {
 
@@ -28,6 +30,8 @@ export class SidebarComponent implements OnInit {
   logout(){
     
     localStorage.removeItem('token');
+    localStorage.removeItem('usuarioId');
+    localStorage.removeItem('nombre');
     this.router.navigateByUrl('/login');
 
 

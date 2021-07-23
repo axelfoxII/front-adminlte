@@ -4,6 +4,7 @@ import { RegisterForm } from '../interfaces/register-form.interface';
 import { LoginForm } from '../interfaces/login-form.interface';
 import { environment } from '../../environments/environment';
 import {tap} from 'rxjs/operators'
+import { Usuario } from '../models/usuario.model';
 
 // http://localhost:3000
 const URL = environment.urlServer;
@@ -24,7 +25,10 @@ export class UsuarioService {
   login(formData:LoginForm){
       
     return this.http.post(`${URL}/auth/login`, formData).pipe(tap((res:any)=>{
+      console.log(res);
       localStorage.setItem('token',res.token);
+      localStorage.setItem('usuarioId', res.usuario.id);
+      localStorage.setItem('nombre', res.usuario.nombre);
     })) 
   
   }
@@ -44,6 +48,8 @@ export class UsuarioService {
   }
 
   deleteUsuario(id:string){
+
+
     
     let headers = new HttpHeaders({
       'token': this.token

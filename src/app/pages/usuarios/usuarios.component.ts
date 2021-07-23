@@ -84,10 +84,13 @@ export class UsuariosComponent implements OnInit,OnDestroy {
 
     })
 
-
   }
 
   eliminarUsuario(id:string){
+   
+    if (id == localStorage.getItem('usuarioId')) {
+      Swal.fire('Error', 'No puede eliminar un usuario activo', 'error');
+    }else{
     
     Swal.fire({
       icon:'question',
@@ -112,11 +115,10 @@ export class UsuariosComponent implements OnInit,OnDestroy {
   
           })
           
-        }
-       
+        }      
 
     });
-
+  } 
 
   }
 
