@@ -4,7 +4,9 @@ import { Subject } from 'rxjs';
 import {Usuario} from '../../models/usuario.model';
 import { UsuarioService } from '../../services/usuario.service';
 import { Router } from '@angular/router';
-import Swal from 'sweetalert2';;
+import Swal from 'sweetalert2';
+
+declare var $:any;
 
 @Component({
   selector: 'app-usuarios',
@@ -30,6 +32,13 @@ export class UsuariosComponent implements OnInit,OnDestroy {
     role: ['', [Validators.required]]
   },{
     validators: this.passwordsIguales('password', 'password2')
+  });
+
+  public cambioContrasena = this.fb.group({
+    
+    oldPassword:[''],
+    newPassword:[''],
+
   });
 
   constructor(private usuarioSvc: UsuarioService, private fb:FormBuilder, private router:Router) { }
@@ -84,6 +93,101 @@ export class UsuariosComponent implements OnInit,OnDestroy {
 
     })
 
+  }
+
+  cambiarPass(id:string){
+
+    let idUser = id;
+    
+
+    $('#cambiarPass').modal('toggle');
+    $('#cambiarPass').modal('show');
+
+    localStorage.setItem('userId',idUser);
+
+
+  }
+
+  llenarForm(id:string){
+  
+    this.usuarioSvc.obtenerIdUsuario(id).subscribe(res=>{
+      
+     this.registerForm.setValue({
+        
+      nombre:res['nombre'],
+      email: res['email'],
+      password: '',
+      password2:'',
+      role: res['role']
+     });
+
+      $('#editarUsuario').modal('toggle');
+      $('#editarUsuario').modal('show');
+
+      localStorage.setItem('idUser', res['id']);
+
+    });
+  }
+
+  editarUsuario(){
+    
+    this.usuarioSvc.editarUsuario(localStorage.getItem('idUser'), this.registerForm.value).subscribe(res=>{
+
+      Swal.fire({
+        icon:'success',
+        title:'Exito',
+        text:'El usuario se actualizo correctamente',
+        confirmButtonText:'Ok'
+      }).then((result)=>{
+
+        if (result) {
+            
+          localStorage.removeItem('idUser');
+          localStorage.removeItem('userId');
+       
+          location.reload();
+
+        }
+
+      });
+
+
+    },(err)=>{
+      
+      const errorEdit = JSON.parse(err.error);
+      Swal.fire('Error', errorEdit.message, 'error');
+
+    });
+
+
+  }
+
+
+  changePassword(){
+      
+    this.usuarioSvc.cambioPassword(localStorage.getItem('userId'),this.cambioContrasena.value).subscribe(res=>{
+        
+      Swal.fire({
+        icon:'success',
+        title: 'El password se actualizo correctamente',
+        confirmButtonText:'Ok'
+      }).then((result)=>{
+
+        if (result) {
+          location.reload();
+          localStorage.removeItem('userId');
+        }
+
+      });
+
+    }, (err)=>{
+          
+      const errorPass = JSON.parse(err.error);
+
+      Swal.fire('Error', errorPass.message, 'error');
+
+    });
+  
   }
 
   eliminarUsuario(id:string){

@@ -4,7 +4,8 @@ import { RegisterForm } from '../interfaces/register-form.interface';
 import { LoginForm } from '../interfaces/login-form.interface';
 import { environment } from '../../environments/environment';
 import {tap} from 'rxjs/operators'
-import { Usuario } from '../models/usuario.model';
+import { CambioPassword } from '../interfaces/cambio-password.interface';
+import { EditForm } from '../interfaces/edit-form-interface';
 
 // http://localhost:3000
 const URL = environment.urlServer;
@@ -56,6 +57,35 @@ export class UsuarioService {
     });
 
     return this.http.delete(`${URL}/usuarios/${id}`, {headers}); 
+
+  }
+
+  cambioPassword(id:string, cambioPass:CambioPassword){
+
+    let headers = new HttpHeaders({
+      'token': this.token
+    });
+
+    return this.http.put(`${URL}/usuarios/cambio-password/${id}`, cambioPass, {headers, responseType:'text'} ); 
+
+  }
+
+  obtenerIdUsuario(id:string){
+  
+    let headers = new HttpHeaders({
+      'token': this.token
+    });
+
+    return this.http.get(`${URL}/usuarios/${id}`,{headers});
+
+  }
+
+  editarUsuario(id:string, editData:EditForm){
+    let headers = new HttpHeaders({
+      'token': this.token
+    });
+
+    return this.http.put(`${URL}/usuarios/${id}`, editData, {headers});
 
   }
 

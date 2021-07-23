@@ -17,6 +17,7 @@
                                     <th>#</th>
                                     <th>Nombre</th>
                                     <th>Email</th>
+                                    <th>Password</th>
                                     <th>Role</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -26,8 +27,9 @@
                                     <td>{{i+1}}</td>
                                     <td>{{usuario.nombre}}</td>
                                     <td>{{usuario.email}}</td>
+                                    <td><button class="btn btn-primary btn-xs" (click)="cambiarPass(usuario.id)"><i class="fas fa-key"></i> Cambio Password </button></td>
                                     <td>{{usuario.role}}</td>
-                                    <td><button class="btn btn-warning btn-xs mr-2"><i class="fas fa-pencil-alt"></i></button>
+                                    <td><button class="btn btn-warning btn-xs mr-2" (click)="llenarForm(usuario.id)"><i class="fas fa-pencil-alt"></i></button>
                                         <button class="btn btn-danger btn-xs" (click)="eliminarUsuario(usuario.id)"><i class="fas fa-trash-alt"></i></button>
                                     </td>
                                 </tr>
@@ -39,6 +41,7 @@
                 <!-- /.card -->
 
 
+                <!-- /Modal Agregar Usuario -->
                 <div class="modal fade" id="agregarUsuario">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -106,6 +109,124 @@
                                         <div class="modal-footer justify-content-between">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                             <button type="submit" class="btn btn-primary">Guardar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+
+
+                <!-- /Modal Agregar Usuario -->
+                <div class="modal fade" id="editarUsuario">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Editar Usuario</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                            </div>
+                            <div class="modal-body">
+                                <form (ngSubmit)="editarUsuario()" [formGroup]="registerForm" autocomplete="off">
+
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" placeholder="Full name" formControlName="nombre">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-user" style="color: rgb(48, 37, 37);"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <input type="email" class="form-control" placeholder="Email" formControlName="email">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-envelope" style="color: rgb(48, 37, 37);"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <select class="form-control" formControlName="role" (change)="changeRole($event)">
+                                        <option value="">Seleccione el rol</option>
+                                        <option *ngFor="let role of Roles" >{{role}}</option>
+                                        
+                                      </select>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <div class="col text-danger">
+
+                                                <p *ngIf="campoNoValido('nombre')">El nombre es obligatorio</p>
+                                                <p *ngIf="campoNoValido('email')">El email es obligatorio</p>
+                                                <p *ngIf="campoNoValido('role')">El role es obligatorio</p>
+
+
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Guardar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+
+
+
+                <!-- /Modal Cambiar Password -->
+                <div class="modal fade" id="cambiarPass">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Cambiar Password</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                            </div>
+                            <div class="modal-body">
+                                <form (ngSubmit)="changePassword()" [formGroup]="cambioContrasena" autocomplete="off">
+
+                                    <div class="input-group mb-3">
+                                        <input type="password" class="form-control" placeholder="Old Password" formControlName="oldPassword">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-lock" style="color: rgb(48, 37, 37);;"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <input type="password" class="form-control" placeholder="new Password" formControlName="newPassword">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-lock" style="color: rgb(48, 37, 37);"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-8">
+
+
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Guardar Password</button>
                                         </div>
                                     </div>
                                 </form>
