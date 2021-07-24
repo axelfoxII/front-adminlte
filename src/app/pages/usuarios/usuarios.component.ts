@@ -154,8 +154,7 @@ export class UsuariosComponent implements OnInit,OnDestroy {
 
     },(err)=>{
       
-      const errorEdit = JSON.parse(err.error);
-      Swal.fire('Error', errorEdit.message, 'error');
+         Swal.fire('Error', err.error.message, 'error');
 
     });
 
@@ -217,6 +216,8 @@ export class UsuariosComponent implements OnInit,OnDestroy {
   
             });
   
+          }, (err)=>{
+            Swal.fire('Error', err.error.message, 'error')
           })
           
         }      
